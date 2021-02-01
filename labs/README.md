@@ -76,7 +76,9 @@ for example. You are ready to install your dependencies for the environment.
 (lab1) $ jupyter notebook
 ```
 
-9. In the toolbar, go to *Kernel->Change kernel->lab1* to activate the environment
+9. Select the file `labsheet1.ipynb`
+
+10. In the toolbar, go to *Kernel->Change kernel->lab1* to activate the environment
 
 Optional: Install any missing dependencies.
 
