@@ -73,7 +73,7 @@ for example. You are ready to install your dependencies for the environment.
 8. Run Jupyter notebook
 
 ```shell
-(lab1) $ jupyter notebookhttp://localhost:8888/notebooks/labsheet1.ipynb#
+(lab1) $ jupyter notebook
 ```
 
 9. In the toolbar, go to *Kernel->Change kernel->lab1* to activate the environment
