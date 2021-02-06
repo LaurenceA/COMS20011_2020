@@ -40,14 +40,14 @@ Anaconda is a tool that will help us manage our virtual environments and install
 
 4. Create a new anaconda virtual environment
 ```shell
-$ conda create --name lab1
+$ conda create --name labs
 ```
 
 Next we need to activate that environment for the current shell
 
 5. Activate conda environment
 ```shell
-$ conda activate lab1
+$ conda activate labs
 ```
 
 If you get a `CommandNotFoundError` this justs means you need to configure your shell to work properly with anaconda and so follow the instructions using `$ conda init <SHELL_NAME` e.g. `$ conda init bash` or `$ conda init zsh`
@@ -56,24 +56,28 @@ If you get a `CommandNotFoundError` this justs means you need to configure your 
 ```
 (base) ~ $ 
 ```
-This means that anaconda is using the base environment. You need to switch to the environment you just created using `$ conda activate lab1`
+This means that anaconda is using the base environment. You need to switch to the environment you just created using `$ conda activate labs`
 
 You should see 
 ```shell
-(lab1) ~ $
+(labs) ~ $
 ```
 for example. You are ready to install your dependencies for the environment.
 
 7. Install ipykernel
 
 ```shell
-(lab1) $ conda install ipykernel  
+(labs) $ conda install ipykernel  
+```
+
+```shell
+(labs) $ python -m ipykernel install --user --name labs
 ```
 
 8. Run Jupyter notebook
 
 ```shell
-(lab1) $ jupyter notebook
+(labs) $ jupyter notebook
 ```
 
 9. Select the file `labsheet1.ipynb`
@@ -86,7 +90,7 @@ If you get any `ModuleNotFoundError`s when running your code, simply switch back
 
 e.g.
 ```shell
-(lab1) $ pip install numpy scipy
+(labs) $ conda install numpy scipy
 ```
 
 ## Starting a Notebook on the lab machines:
