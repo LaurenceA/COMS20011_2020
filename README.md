@@ -147,3 +147,8 @@ I have printed the Notebooks as pdfs.  Note that this really doesn't work well, 
 #### Coursework Q&A
 * [19/04](https://web.microsoftstream.com/video/bf7bfd50-409d-4615-93cc-9214ca952236)
 * [26/04](https://web.microsoftstream.com/video/e637f931-066b-4e28-b8fb-e1d5723f4035)
+
+#### Catch-up Q&As on Majid's most recent lectures
+* [30/04](https://web.microsoftstream.com/video/6423cca2-417f-4a37-b7b9-f16ba8b5bbf3)
+* [07/05]
+* [10/05]
