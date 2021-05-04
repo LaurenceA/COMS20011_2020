@@ -1,0 +1,569 @@
+\documentclass[     type={question}, % "question" or "solution"
+                unitname={Symbols, Patterns and Signal},
+                unitcode={COMS21202},
+                    year={2020},
+                   resit={false},
+                  rubric={MC},
+                duration={2 hours},
+                  season={autumn} ]{cs.exam}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{times}
+%\usepackage{mathptmx}
+\usepackage{minibox}
+\usepackage{enumerate}
+
+\newcommand{\bracket}[3]{\left#1 #3 \right#2}
+\renewcommand{\b}{\bracket{(}{)}}
+\newcommand{\Bernoulli}{{\rm Bernoulli}\b}
+\newcommand{\Categorical}{{\rm Categorical}\b}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\m}{\boldsymbol{\mu}}
+\renewcommand{\P}{{\rm P}\b}
+\newcommand{\dd}[2][]{\frac{\partial #1}{\partial #2}}
+\renewcommand{\S}{\mathbf{\Sigma}}
+\newcommand{\Sh}{\mathbf{\hat{\Sigma}}}
+\newcommand{\mh}{\boldsymbol{\hat{\mu}}}
+\newcommand{\N}{\mathcal{N}\b}
+\newcommand{\abs}{\bracket{\lvert}{\rvert}}
+\renewcommand{\sb}{\bracket{[}{]}}
+\newcommand{\E}{\mathbb{E}\sb}
+\newcommand{\Var}{{\rm Var}\sb}
+\newcommand{\Cov}{{\rm Cov}\sb}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\newcommand{\ph}{\hat{p}}
+\newcommand{\at}{\bracket{.}{\rvert}}
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\Wh}{\mathbf{\hat{W}}}
+\newcommand{\Y}{\mathbf{Y}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\wh}{\mathbf{\hat{w}}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\0}{\mathbf{0}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\La}{\mathbf{\Lambda}}
+\newcommand{\Sprior}{\S_\text{prior}}
+\newcommand{\Spost}{\S_\text{post}}
+\newcommand{\mprior}{\m_\text{prior}}
+\newcommand{\mpost}{\m_\text{post}}
+\newcommand{\Xt}{\tilde{\X}}
+\newcommand{\yt}{\tilde{\y}}
+\newcommand{\p}{\mathbf{p}}
+\renewcommand{\l}{\boldsymbol{\ell}}
+\DeclareMathOperator{\softmax}{softmax}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\norm}{\bracket{\lVert}{\rVert}}
+
+
+\begin{document}
+\begin{MKEXAM}
+
+\noindent \textbf{Help Formulas:}\\
+
+%Minkowski distance:
+%\begin{equation*}D(x,y) = (\sum_{i=1}^n {|x_i - y_i|^p})^{\frac{1}{p}}\end{equation*}
+
+One-dimensional Gaussian/Normal probability density function:
+\begin{equation*}p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}}e^{-\frac{(x-\mu)^2}{2 \sigma^2}}\end{equation*}
+
+Multi-dimensional Gaussian/Normal probability density function:
+\begin{equation*}p(\textbf{x}) = \frac{1}{\sqrt{(2 \pi)^M |\Sigma|}}e^{-\frac{1}{2}(\textbf{x} - \boldsymbol{\mu})^T \Sigma^{-1}(\textbf{x}-\boldsymbol{\mu})}\end{equation*}
+
+Least Squares Matrix Form:
+\begin{equation*}\textbf{a}_{LS} = (\textbf{X}^T \textbf{X})^{-1} \  \textbf{X}^T \  \textbf{y}
+\end{equation*}
+
+Matrix inversion:
+\begin{align*}
+	\begin{pmatrix}
+    a&b\\
+    c&d
+	\end{pmatrix}^{-1}
+  = \frac{1}{ad-bc}
+	\begin{pmatrix}
+    d & -b\\
+    -c& a
+	\end{pmatrix}.
+\end{align*}
+
+Matrix Determinant:
+\begin{align*}
+	\begin{vmatrix}
+	a&b\\
+	c&d
+	\end{vmatrix} = ad-bc
+\end{align*}
+
+%RBF function of $x$ with centroid $b$ and width $\sigma$:
+%\begin{equation*}
+%f(\mathbf{x};\mathbf{b},\sigma) = \exp\left(-\frac{\|\mathbf{x}-\mathbf{b}\|^2}{\sigma^2} \right)
+%\end{equation*}
+%
+%Polynomial kernel:
+%\begin{equation*}k(\mathbf{x},\mathbf{x'}) = (\langle\mathbf{x},\mathbf{x'} \rangle+ c)^b
+%\end{equation*}
+
+%Computational complexity of $n\times n$ matrix inversion: $O(n^3)$.
+
+\vspace{16pt}
+\newpage
+
+% -----------------------------------------------------------------------------
+%\begin{MKQUESTION}{MC}
+%\label{question1}{Data Acquisition and Modelling}
+
+\begin{enumerate}[1.]
+
+
+
+\item  The image below shows an analogue one-dimensional signal. You are asked to digitise this signal. For that you have to decide which sampling frequency and quantisation to use. Select which of the following would provide a good enough sampling rate and split the signal into 8 levels.
+\begin{center}
+\includegraphics [width=0.8\textwidth] {Figures/analog_signal_resit.png}
+\end{center}
+  \begin{enumerate}[(a)]
+  \item Sampling frequency = 12Hz, quantisation = 4 bits
+  \item Sampling frequency = 8Hz, quantisation = 3 bits
+  \item Sampling frequency = 2Hz, quantisation = 4 bits
+  \item Sampling frequency = 2Hz, quantisation = 3 bits
+  \item None of the above\mks{2}
+\end{enumerate}
+
+\newpage
+
+\item A collaborator records the muscle activity of an olympic athlete while running, and asks for your help to analyse it. You have already decided that the best sampling frequency is 2Hz and that you are going to use 2 bits to digitise the analog signal. What would be the correct binary representation of the signal plotted in the image below.
+\begin{center}
+\includegraphics [width=0.8\textwidth] {Figures/brain_activity_resit.png}
+\end{center}
+
+  \begin{enumerate}[(a)]
+  \item 001100110110
+  \item 001100110111
+  \item 011101110110
+  \item 011101110111
+  \item 001101110111\mks{3}
+\end{enumerate}
+
+
+\item Compute the Hamming and Edit distance between these two strings: datascience and datedscience
+
+  \begin{enumerate}[(a)]
+  \item Hamming = 2, Edit distance = 3
+  \item Hamming = 2, Edit distance = 2
+  \item Hamming = 1, Edit distance = 3
+  \item Hamming = 1, Edit distance = 2
+  \item None of the above\mks{2}
+\end{enumerate}
+
+
+\item You collected a four dimensional dataset of values $\textbf{x} = (x_1, x_2, x_3, x_4)$ with means $(2, 3, 2.4, 1.6)$ and the following covariance matrix
+\begin{equation*}
+\begin{bmatrix}
+4 & -1.5 & -2 &-3\\
+-1.5 & 2 &-0.1 &0\\
+-2 & -0.1 & 1 &0.1\\
+-3 & 0 & 0.1 &0.5
+\end{bmatrix}
+\end{equation*}
+You are asked to select $x_1$ and one another variable to be processed by a machine learning algorithm. Which variable would you pick to best complement the information provided by $x_1$?
+
+  \begin{enumerate}[(a)]
+  \item $x_1$
+  \item $x_2$
+  \item $x_3$
+  \item $x_4$
+  \item $x_5$\mks{3}
+  \end{enumerate}
+
+
+\item You are asked to find the most informative dimension of a 2D dataset with the following covariance matrix
+\begin{equation*}
+\begin{bmatrix}
+4 & 1\\
+1 & 3\\
+\end{bmatrix}
+\end{equation*}
+What is the most informative eigenvalue and eigenvector with unit vector length?
+
+
+  \begin{enumerate}[(a)]
+  \item $\lambda \sim 4.62$ and $v = [0.95\:\:0.54]$
+  \item $\lambda \sim 4.62$ and $v = [0.85\:\:0.53]$
+  \item $\lambda \sim 4.62$ and $v =  [0.75\:\:0.52]$
+  \item $\lambda \sim 2.38$ and $v =  [0.15\:\:0.54]$
+  \item $\lambda \sim 2.38$ and $v =  [0.45\:\:0.59]$\mks{4}
+%  \item $\lambda \sim 2.38$ and $v =  [0.15\:\:0.33]$
+  \end{enumerate}
+
+
+\item You are given four 2D data points (x,y) represented in the figure below.  Assuming a linear model of the form $y = a + b x$ use the general matrix form least squares method to tune the model's parameters. What is the result that you obtain:
+%\vspace{12pt}
+\begin{center}
+\includegraphics[width=0.6\textwidth] {Figures/scatter2.png}
+\end{center}
+
+%a:  2.88135593220339  b:  0.06779661016949129
+\begin{enumerate}[(a)]
+\item $y =  2.88 + 0.07x$
+\item $y =  2.78 + 0.08x$
+\item $y =  2.68 + 0.06x$
+\item $y =  2.61 + 0.05x$
+\item $y =  2.9 + 0.1x$\mks{3}
+\end{enumerate}
+
+
+\item Using the multivariate normal distribution, calculate the probability of the datapoint $x = (1,-1.9)$ using mean $(1, -2)$ and covariance matrix $\begin{bmatrix} 1 &0.3 \\ 0.3 &6 \end{bmatrix}$.
+
+  \begin{enumerate}[(a)]
+  \item 0.055
+  \item 0.065
+  \item 0.032
+  \item 0.019
+  \item 0.075\mks{3}
+%  \item 0.086
+%  \item 0.025
+  \end{enumerate}
+
+
+
+
+
+
+\item For the data displayed in the table, compute the least-squares parameter fit for a model of the form, $\hat{y} = w_0 + w_1 x$.
+
+\begin{tabular}{rr}
+  $x$   & $y$   \\
+  \hline
+  -1.0 & -0.3 \\
+   0.0 &  3.2 \\
+   1.0 &  6.1 \\
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item $\hat{y} = 3.00 + 3.20 x$
+  \item $\hat{y} = 3.50 + 3.02 x$
+  \item $\hat{y} = 3.57 + 3.32 x$
+  \item $\hat{y} = 3.25 + 3.32 x$
+  \item $\hat{y} = 3.22 + 3.36 x$
+\end{enumerate}
+\mks{3}
+
+
+
+
+
+\item Given the test set in the table, which model has the lowest test-squared-error?
+
+\begin{tabular}{rr}
+  $x$   & $y$   \\
+  \hline
+  -0.5 & -2.2 \\
+   0.0 &  0.3 \\
+   0.5 &  1.2 \\
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item $\hat{y} =                      - 0.5$
+  \item $\hat{y} =                   2x - 0.5$
+  \item $\hat{y} =                   3x - 1$
+  \item $\hat{y} =        - 0.3x^2 + 2x - 1$
+  \item $\hat{y} = 0.2x^3          + 2x - 1$
+\end{enumerate}
+\mks{3}
+
+
+
+
+
+%\item For the data sample in the table, and a model of the form $y = w_0 + w_1 x$, with a noise-level of $\sigma = 1$, and a regulariser of $\La = 2 \I$, compute the regularised ML solution.
+%\begin{align*}
+%  \L\b{\w} &= \log \N{\y; \X \w, \sigma^2 \I} - \tfrac{1}{2} \w^T \La \w
+%\end{align*}
+%
+%\begin{tabular}{rr}
+%  $x$   & $y$   \\
+%  \hline
+%   0.0 &   6.4 \\
+%   1.5 &   2.8 \\
+%   3.0 &   0.5 \\
+%   4.5 &  -3.2
+%\end{tabular}
+%
+%\begin{enumerate}[(a)]
+%  \item $2.47 - 0.92 x$
+%  \item $2.32 - 0.87 x$
+%  \item $2.37 - 0.96 x$
+%  \item $2.12 - 1.03 x$
+%  \item $2.23 + 1.08 x$
+%\end{enumerate}
+%\mks{3}
+
+
+
+
+
+\item Which of these is not a common cause of overfitting?
+\begin{enumerate}[(a)]
+  \item small data
+  \item complex model
+  \item inputs concentrated in small regions of input space
+  \item no regularisation
+  \item Bayesian inference
+\end{enumerate}
+\mks{2}
+
+
+
+
+
+\item For the following dataset, fit Gaussian distributions to each class using maximum-likelihood, then compute the corresponding posterior over the class-label for $x=0.1$ (specifically $\P{y=1| x_0=0.1}$).
+
+\begin{tabular}{rr}
+$x$ & $y$ \\
+\hline
+-0.5 & 0\\
+-1.3 & 0\\
+ 0.3 & 0\\
+ 0.4 & 1\\
+ 1.0 & 1\\
+ 0.6 & 1
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item 0.16
+  \item 0.21
+  \item 0.25
+  \item 0.31
+  \item 0.46
+\end{enumerate} 
+
+
+
+
+\item Assuming K-means with $K=2$ cluster centers which are initialized at -1.9 and 1.4, assign datapoints to the nearest clusters, and compute the loss function (i.e. the sum-square distance between the cluster centers and assigned data points) for the following data,
+
+\begin{tabular}{rr}
+  $x$\\
+  \hline
+  -2.3\\
+  -1.5\\
+   1.2\\
+   1.3\\
+   1.7
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item 0.40
+  \item 0.53
+  \item 0.57
+  \item 0.42
+  \item 0.46
+\end{enumerate}
+\mks{3}
+
+
+
+
+
+\item Do a GMM M-step for a single cluster.  In particular, $x$ is the location of each datapoint, and $p$ is the posterior probability that this datapoint belongs to the first cluster, compute the optimal mean for the first cluster (by taking the weighted mean of the datapoints).
+
+\begin{tabular}{rr}
+  $x$    & $p$\\
+  \hline
+  -3.0 & 0.1\\
+  -2.3 & 0.3\\
+  -1.5 & 0.2\\
+   1.2 & 0.7\\
+   1.3 & 0.9\\
+   1.7 & 0.95
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item 0.62
+  \item 0.74
+  \item 1.03
+  \item 1.23
+  \item 0.82
+\end{enumerate}
+\mks{3}
+
+
+
+%%%--------Majid-----------------------------------------------------
+\newpage
+\item The 2D Fourier transform can be performed as two 1D transforms. The same is true for some spatial filters. What is the equivalent 2D filter corresponding to applying the 1D filter $f = (-2 ~~ 2 ~ -2)$ twice, once horizontally and once vertically?
+  \vspace{2ex}
+
+  \begin{enumerate} [(a)]
+   \item $~ ~ \left(\begin{array}{ccc} -4 & 4 & -4 \end{array}\right)$
+  \item $~ ~ \left(\begin{array}{ccc}-4 & 4 & -4 \\ 4 & -4 & 4 \\ -4 & 4 & -4\end{array}\right)$
+  \item $~ ~  \left( 12 \right)$
+  \item $~ ~ \left(\begin{array}{ccc}4 & -4 & 4 \\ -4 & 4 & -4 \\ 4 & -4 &   4\end{array}\right)$
+  \item $~ ~ \left(\begin{array}{ccc} -4 & 8 & -4 \end{array}\right)$
+  \end{enumerate}
+\mks{3}
+%\begin{solution}
+%   (d)
+%\end{solution}
+
+
+
+\item Matrix $K$ is a covariance matrix of some 3D data:
+
+${K}=\left[\begin{array}{ccc}1 & -1 & 4 \\ 3 & 2 & -1 \\ 2 & 1 & -1\end{array}\right]$
+
+  Which of the following sets is the correct eigenvalues and
+  eigenvectors of $K$?
+
+\begin{enumerate}[(a)]
+\item Set A \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_A=7 $ ~ and ~
+$\mathbf{e}_A=\left[\begin{array}{c}1 \\-2 \\1\end{array}\right]$, \\
+\item Set B \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_B=-5 $ ~ and ~
+$\mathbf{e}_B=\left[\begin{array}{c}-1 \\-2  \\1
+\end{array}\right]$.
+\item Set C \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_C=-2 $ ~ and
+~
+$\mathbf{e}_C=\left[\begin{array}{c}-1 \\1  \\1 \end{array}\right]$, \\
+\item Set D \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_D=1 $ ~ and ~
+$\mathbf{e}_D=\left[\begin{array}{c}-1 \\2  \\1
+\end{array}\right]$.
+\item none of the above
+\end{enumerate}
+\mks{4}
+%\begin{solution}
+%(c)
+%\end{solution}
+
+
+\item The eigenvalues of a dataset are: [25, 20, 11, 4, 1, 0.78, 0.22]. Approximately what variance in the dataset do the first 4 eigenvalues represent (when rounded)?
+
+\begin{enumerate} [(a)]
+  \item 97\%
+  \item 94\%
+  \item 96\%
+  \item 95\%
+  \item 92\%
+\end{enumerate}
+\mks{4}
+%  \begin{solution}
+%    (a)
+%  \end{solution}
+
+
+\item Figure \ref{fig:STV} shows handwritten graffiti type letters S, T, and V which are correspondingly labelled $(S,T,V)$.
+\begin{figure}[h!]
+\centering
+\begin{tabular}{ccc}
+\includegraphics[height=0.15\textwidth]{Figures/T7.pdf}&\includegraphics[height=0.15\textwidth]{Figures/S3.pdf} &
+\includegraphics[height=0.15\textwidth]{Figures/V5.pdf}  \tabularnewline
+ $T$  & $S$ &  $V$   \tabularnewline
+\end{tabular}
+\caption{{Handwritten images of the letters T, S, and V}}
+\label{fig:STV}
+\end{figure}
+
+Below in Figure \ref{fig:fftres}, there are three results, labelled $(X,Y,Z)$ that represent, \textit{in an arbitrary order}, the FFT of the images in Figure \ref{fig:STV}. Select the choice that correctly states which FFT image corresponds to which graffiti image, using the image labels.
+
+\begin{figure}[h!]
+\centering
+\begin{tabular}{ccc}
+\includegraphics[height=0.25\textwidth]{Figures/V5FFT.pdf} &
+\includegraphics[height=0.25\textwidth]{Figures/T7FFT.pdf} &
+\includegraphics[height=0.25\textwidth]{Figures/S3FFT.pdf}
+ \tabularnewline
+$X$ & $Y$ &  $Z$  \tabularnewline
+%{\footnotesize a} & {\footnotesize b} & c\tabularnewline
+\end{tabular}
+\caption{{ FFT results}}
+\label{fig:fftres}
+\end{figure}
+%\vspace*{-5mm}
+
+\begin{enumerate}[(a)]
+\item $(X,Y,Z)$ corresponds to $(V,S,T)$
+\item $(X,Y,Z)$ corresponds to $(V,T,S)$
+\item $(X,Y,Z)$ corresponds to $(T,S,V)$
+\item $(X,Y,Z)$ corresponds to $(T,V,S)$
+\item $(X,Y,Z)$ corresponds to $(S,V,T)$
+\end{enumerate}
+\mks{5}
+%  \begin{solution}
+%    (b)
+%  \end{solution}
+
+
+\item How are the $\boldsymbol{(a_i,b_i,\cos,\sin)}$ terms commonly referred as in the Fourier Series equation below:
+  \begin{equation*}
+    {f(x) =  \sum_{n=0}^{\infty} \left[
+        a_{n}\,\boldsymbol{\cos} (\frac{2\pi\,n\,x}{T}) + b_{n} \,\boldsymbol{\sin} (\frac{2\pi\,n\,x}{T}) \right] }
+    %%%%
+    %%%% \mathbf{f(x) = \frac{1}{2} \, a_{0} + \sum_{n=1}^{\infty} \left[   a_{n}\,\boldsymbol{\cos} (n\,x) + b_{n} \,\boldsymbol{\sin} (n\,x) \right] }
+  \end{equation*}
+\begin{enumerate}[(a)]
+  \item The $\boldsymbol{\cos}$ and $\boldsymbol{\sin}$ terms are the Fourier coefficients, and the $\boldsymbol{a_n}$ and $\boldsymbol{b_n}$ terms are the basis functions.
+ \item The $\boldsymbol{\cos}$ and $\boldsymbol{\sin}$ terms are the basis coefficients, and the $\boldsymbol{a_n}$ and $\boldsymbol{b_n}$ terms are the Fourier coefficients.
+  \item The $\boldsymbol{\cos}$ and $\boldsymbol{\sin}$ terms are the Fourier coefficients, and the $\boldsymbol{a_n}$ and $\boldsymbol{b_n}$ terms are the basis coefficients.
+  \item The $\boldsymbol{\cos}$ and $\boldsymbol{\sin}$ terms are the basis functions, and the $\boldsymbol{a_n}$ and $\boldsymbol{b_n}$ terms are the Fourier coefficients.
+ \item none of the above
+\end{enumerate}
+\mks{2}
+%\begin{solution}
+%(d)
+%\end{solution}
+
+
+
+\item A 5x5 spatial filter has all its elements set to $-0.25$, except for the central element which is set to 7. It must then have a:
+
+\begin{enumerate} [(a)]
+  \item normalisation factor of 1/6
+  \item normalisation factor of 1/1
+  \item normalisation factor of 1/13
+  \item normalisation factor of 1/7
+  \item normalisation factor of 1/25
+\end{enumerate}
+\mks{2}
+%\begin{solution}
+%   (c)
+%\end{solution}
+
+
+
+\end{enumerate}
+
+\begin{MKSOLUTION}
+\newpage
+\begin{tabular}{|c|c|}
+\hline
+%\textbf{Q1} &\textbf{Answer}\\ \hline
+1  & (b)\\
+2  & (e)\\
+3  & (e)\\
+4  & (b)\\
+5  & (b)\\
+6  & (a)\\
+7  & (b)\\
+8  &(a)\\
+9  &(b)\\
+10 &(a)\\
+11 &(e)\\
+12 &(b)\\
+13 &(e)\\
+14 &(b)\\
+15 &(d)\\
+16 &(c)\\
+17 &(a)\\
+18 &(b)\\
+19 &(d)\\
+20 &(c)\\
+\hline
+\end{tabular}
+
+\end{MKSOLUTION}
+
+\end{MKEXAM}
+\end{document}

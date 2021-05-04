@@ -1,0 +1,573 @@
+\documentclass[     type={question}, % "question" or "solution"
+                unitname={Symbols, Patterns and Signal},
+                unitcode={COMS21202},
+                    year={2020},
+                   resit={false},
+                  rubric={MC},
+                duration={2 hours},
+                  season={summer} ]{cs.exam}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{times}
+%\usepackage{mathptmx}
+\usepackage{minibox}
+\usepackage{enumerate}
+
+\newcommand{\bracket}[3]{\left#1 #3 \right#2}
+\renewcommand{\b}{\bracket{(}{)}}
+\newcommand{\Bernoulli}{{\rm Bernoulli}\b}
+\newcommand{\Categorical}{{\rm Categorical}\b}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\m}{\boldsymbol{\mu}}
+\renewcommand{\P}{{\rm P}\b}
+\newcommand{\dd}[2][]{\frac{\partial #1}{\partial #2}}
+\renewcommand{\S}{\mathbf{\Sigma}}
+\newcommand{\Sh}{\mathbf{\hat{\Sigma}}}
+\newcommand{\mh}{\boldsymbol{\hat{\mu}}}
+\newcommand{\N}{\mathcal{N}\b}
+\newcommand{\abs}{\bracket{\lvert}{\rvert}}
+\renewcommand{\sb}{\bracket{[}{]}}
+\newcommand{\E}{\mathbb{E}\sb}
+\newcommand{\Var}{{\rm Var}\sb}
+\newcommand{\Cov}{{\rm Cov}\sb}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\sign}{sign}
+\newcommand{\ph}{\hat{p}}
+\newcommand{\at}{\bracket{.}{\rvert}}
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\Wh}{\mathbf{\hat{W}}}
+\newcommand{\Y}{\mathbf{Y}}
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\wh}{\mathbf{\hat{w}}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\0}{\mathbf{0}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\La}{\mathbf{\Lambda}}
+\newcommand{\Sprior}{\S_\text{prior}}
+\newcommand{\Spost}{\S_\text{post}}
+\newcommand{\mprior}{\m_\text{prior}}
+\newcommand{\mpost}{\m_\text{post}}
+\newcommand{\Xt}{\tilde{\X}}
+\newcommand{\yt}{\tilde{\y}}
+\newcommand{\p}{\mathbf{p}}
+\renewcommand{\l}{\boldsymbol{\ell}}
+\DeclareMathOperator{\softmax}{softmax}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\norm}{\bracket{\lVert}{\rVert}}
+
+
+\begin{document}
+\begin{MKEXAM}
+
+\noindent \textbf{Help Formulas:}\\
+
+%Minkowski distance:
+%\begin{equation*}D(x,y) = (\sum_{i=1}^n {|x_i - y_i|^p})^{\frac{1}{p}}\end{equation*}
+
+One-dimensional Gaussian/Normal probability density function:
+\begin{equation*}p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}}e^{-\frac{(x-\mu)^2}{2 \sigma^2}}\end{equation*}
+
+Multi-dimensional Gaussian/Normal probability density function:
+\begin{equation*}p(\textbf{x}) = \frac{1}{\sqrt{(2 \pi)^M |\Sigma|}}e^{-\frac{1}{2}(\textbf{x} - \boldsymbol{\mu})^T \Sigma^{-1}(\textbf{x}-\boldsymbol{\mu})}\end{equation*}
+
+Least Squares Matrix Form:
+\begin{equation*}\textbf{a}_{LS} = (\textbf{X}^T \textbf{X})^{-1} \  \textbf{X}^T \  \textbf{y}
+\end{equation*}
+
+Matrix inversion:
+\begin{align*}
+	\begin{pmatrix}
+    a&b\\
+    c&d
+	\end{pmatrix}^{-1}
+  = \frac{1}{ad-bc}
+	\begin{pmatrix}
+    d & -b\\
+    -c& a
+	\end{pmatrix}.
+\end{align*}
+
+Matrix Determinant:
+\begin{align*}
+	\begin{vmatrix}
+	a&b\\
+	c&d
+	\end{vmatrix} = ad-bc
+\end{align*}
+
+%RBF function of $x$ with centroid $b$ and width $\sigma$:
+%\begin{equation*}
+%f(\mathbf{x};\mathbf{b},\sigma) = \exp\left(-\frac{\|\mathbf{x}-\mathbf{b}\|^2}{\sigma^2} \right)
+%\end{equation*}
+%
+%Polynomial kernel:
+%\begin{equation*}k(\mathbf{x},\mathbf{x'}) = (\langle\mathbf{x},\mathbf{x'} \rangle+ c)^b
+%\end{equation*}
+
+%Computational complexity of $n\times n$ matrix inversion: $O(n^3)$.
+
+\vspace{16pt}
+\newpage
+
+% -----------------------------------------------------------------------------
+%\begin{MKQUESTION}{MC}
+%\label{question1}{Data Acquisition and Modelling}
+
+
+\begin{enumerate}[1.]
+
+
+
+\item  The image below shows an analogue one-dimensional signal. You are asked to digitise this signal. For that you have to decide which sampling frequency and quantisation to use. Select which of the following would provide a good enough sampling rate and split the signal into 9 levels.
+\begin{center}
+\includegraphics [width=0.8\textwidth] {Figures/analog_signal.png}
+\end{center}
+  \begin{enumerate}[(a)]
+  \item Sampling frequency = 10Hz, quantisation = 4 bits
+  \item Sampling frequency = 8Hz, quantisation = 3 bits
+  \item Sampling frequency = 2Hz, quantisation = 4 bits
+  \item Sampling frequency = 2Hz, quantisation = 3 bits
+  \item None of the above\mks{2}
+\end{enumerate}
+
+\newpage
+
+\item A collaborator records the brain activity of an olympic athlete while running, and asks for your help to analyse it. You have already decided that the best sampling frequency is 2Hz and that you are going to use 3 bits to digitise the analog signal. What would be the correct binary representation of the signal plotted in the image below.
+\begin{center}
+\includegraphics [width=0.8\textwidth] {Figures/brain_activity.png}
+\end{center}
+
+  \begin{enumerate}[(a)]
+  \item 000111010110010111
+  \item 001111010110010111
+  \item 001011010110010101
+  \item 001111010100010111
+  \item 000111011110010111
+\end{enumerate}\mks{3}
+
+\item Compute the 1-norm distance (L1) between these datapoints A and B. Where A=(3,1,5,3,5,8,1,0) and B=(2,1,3,5,5,8,1,1)
+
+  \begin{enumerate}[(a)]
+  \item L1(A,B) = 6
+  \item L1(A,B) = 5
+  \item L1(A,B) = 7
+  \item L1(A,B) = 8
+  \item None of the above\mks{2}
+\end{enumerate}
+
+\item You collected a four dimensional dataset of values $\textbf{x} = (x_1, x_2, x_3, x_4)$ with means $(3, 2, 3.5, 2.6)$ and the following covariance matrix
+\begin{equation*}
+\begin{bmatrix}
+4 & 3 & -0.1 &-1\\
+3 & 0.01 &-0.1 &0\\
+-0.1 & -0.1 & 4 &0.1\\
+-1 & 0 & 0.1 &9
+\end{bmatrix}
+\end{equation*}
+You are asked to select $x_1$ and one another variable to be processed by a machine learning algorithm. Which variable would you pick to best complement the information provided by $x_1$?
+
+  \begin{enumerate}[(a)]
+  \item $x_1$
+  \item $x_2$
+  \item $x_3$
+  \item $x_4$
+  \item $x_3$ and $x_4$\mks{3}
+  \end{enumerate}
+
+
+
+\item You are asked to find the most informative dimension of a 2D dataset with the following covariance matrix
+\begin{equation*}
+\begin{bmatrix}
+3 & 0.2\\
+0.2 & 5\\
+\end{bmatrix}
+\end{equation*}
+What is the most informative eigenvalue and its respective eigenvector with unit vector length?
+
+  \begin{enumerate}[(a)]
+  \item $\lambda \sim 3$ and $v = [\frac{1}{\sqrt{101}} \: \frac{10}{\sqrt{101}}]$
+  \item $\lambda \sim 3$ and $v =  [\frac{1}{10} \: 1]$
+  \item $\lambda \sim 3$ and $v =  [\frac{1}{2} \:\: \sqrt{\frac{3}{4}}]$
+  \item $\lambda \sim 5$ and $v =  [\frac{1}{\sqrt{101}} \: \frac{10}{\sqrt{101}}]$
+  \item $\lambda \sim 5$ and $v =  [\frac{1}{2} \:\: \sqrt{\frac{3}{4}}]$\mks{4}
+%  \item $\lambda \sim 5$ and $v =  [\frac{1}{10} \: 1]$
+  \end{enumerate}
+
+
+\item You are given four 2D data points (x,y) represented in the figure below.  Assuming a linear model of the form $y = a + b x$ use the general matrix form least squares method to tune the model's parameters. What is the result that you obtain:
+%\vspace{12pt}
+\begin{center}
+\includegraphics[width=0.6\textwidth] {Figures/scatter1.png}
+\end{center}
+
+%a:  1.1052631578947374  b:  1.3157894736842102
+\begin{enumerate}[(a)]
+\item $y =  1.2 + 1.4x$
+\item $y =  1 + 2x$
+\item $y =  1 + 2.3x$
+\item $y =  1.1 + 1.3x$
+\item $y =  1.1 + 2.1x$\mks{3}
+\end{enumerate}
+
+\item Using the multivariate normal distribution, calculate the probability of the datapoint $x = (1,-1.9)$ using mean $(1, -2)$ and covariance matrix $\begin{bmatrix} 3 &0.2 \\ 0.2 &5 \end{bmatrix}$.
+
+  \begin{enumerate}[(a)]
+  \item 0.054
+  \item 0.032
+  \item 0.041
+  \item 0.011
+  \item 0.049\mks{3}
+%  \item 0.055
+%  \item 0.014
+  \end{enumerate}
+
+
+
+
+
+\item For the data displayed in the table, compute the least-squares parameter fit for a model of the form, $\hat{y} = w_0 + w_1 x$.
+
+\begin{tabular}{rr}
+  $x$   & $y$   \\
+  \hline
+  0.5 & 3.2 \\
+  1.0 & 2.4 \\
+  1.5 & 2.1 \\
+  2.0 & 1.1
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item $\hat{y} = 2.89 - 0.76 x$
+  \item $\hat{y} = 4.02 - 0.89 x$
+  \item $\hat{y} = 3.57 - 1.29 x$
+  \item $\hat{y} = 3.85 - 1.32 x$
+  \item $\hat{y} = 3.82 - 1.36 x$
+\end{enumerate}
+\mks{3}
+
+
+
+
+
+\item Given the dataset in the table, which model has the lowest squared-error?
+
+\begin{tabular}{rr}
+  $x$   & $y$   \\
+  \hline
+  -1.0 & -0.4 \\
+   0.0 &  2.4 \\
+   1.0 &  4.3 \\
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item $\hat{y} =                        2$
+  \item $\hat{y} =                   2x + 2$
+  \item $\hat{y} =                   3x + 2$
+  \item $\hat{y} =        - 0.3x^2 + 2x + 2$
+  \item $\hat{y} = 0.2x^3          + 2x + 2$
+\end{enumerate}
+\mks{3}
+
+
+
+
+
+%\item For the data sample in the table, and a model of the form $y = w_0 + w_1 x$, with a noise-level of $\sigma = 1$, and a regulariser of $\La = \I$, compute the regularised ML solution,
+%
+%\begin{align*}
+%  \L\b{\w} &= \log \N{\y; \X \w, \sigma^2 \I} - \tfrac{1}{2} \w^T \La \w
+%\end{align*}
+%
+%
+%\begin{tabular}{rr}
+%  $x$   & $y$   \\
+%  \hline
+%   0.0 & -0.4 \\
+%   1.0 &  2.8 \\
+%   2.0 &  3.2 \\
+%   3.0 &  6.6
+%\end{tabular}
+%
+%\begin{enumerate}[(a)]
+%  \item $0.20 + 1.97 x$
+%  \item $0.15 + 2.32 x$
+%  \item $0.23 + 1.84 x$
+%  \item $0.13 + 1.53 x$
+%  \item $0.11 + 2.12 x$
+%\end{enumerate}
+%\mks{3}
+
+
+
+
+\item What issue must we consider in regression, but not in classification?
+\begin{enumerate}[(a)]
+  \item model-complexity
+  \item fitting the noise level, $\sigma$
+  \item overfitting
+  \item regularisation
+  \item cross-validation
+\end{enumerate}
+\mks{2}
+
+
+
+
+\item For the following dataset, fit Gaussian distributions to each class using maximum-likelihood, then compute the corresponding posterior over the class-label for $x=-0.3$ (specifically $\P{y=1| x_0=-0.3}$).
+
+\begin{tabular}{rr}
+$x$ & $y$ \\
+\hline
+-1.0 & 0\\
+-1.9 & 0\\
+-1.5 & 0\\
+ 3.1 & 1\\
+ 1.3 & 1\\
+ 0.7 & 1
+\end{tabular}
+
+\begin{enumerate}[(a)]
+  \item 0.57
+  \item 0.78
+  \item 0.89
+  \item 0.97
+  \item 0.99
+\end{enumerate}
+\mks{3}
+
+
+
+
+\item In K-means, consider initializing the algorithm with two cluster centers at $-1$ and $1$, and data at,
+
+\begin{tabular}{rr}
+  $x$\\
+  \hline
+  -3.0\\
+  -2.3\\
+  -1.5\\
+   1.2\\
+   1.3\\
+   1.7
+\end{tabular}
+
+Compute updated cluster centers under a single K-means update step.
+\begin{enumerate}[(a)]
+  \item -2.02 and 1.46
+  \item -2.27 and 1.40
+  \item -2.73 and 1.53
+  \item -2.32 and 1.45
+  \item -2.42 and 1.32
+\end{enumerate}
+\mks{3}
+
+
+
+
+\item In a Gaussian mixture model, with two clusters,
+\begin{align*}
+  \P{z=0} &= \P{z=1} = 0.5\\
+  \P{x| z=0} &= \N{x; -1, 0.25}\\
+  \P{x| z=1} &= \N{x; 1, 2}
+  %p_1 &= p_2 = 0.5\\
+  %\mu_1 &= -1\\
+  %\mu_2 &= 1\\
+  %\sigma_1 &= 0.25\\
+  %\sigma_2 &= 2\\
+  %\P{x} &= \sum_i p_i \N{x; \mu_i, \sigma_i^2}
+\end{align*}
+Compute $\P{z=0| x=-0.2}$.
+
+\begin{enumerate}[(a)]
+  \item 0.049
+  \item 0.023
+  \item 0.104
+  \item 0.054
+  \item 0.046
+\end{enumerate}
+\mks{3}
+
+
+% -----Majid------------------------------------------------------------------------
+
+
+\newpage
+
+
+\item  The trigonometric Fourier series of an odd function of time does not contain the...
+ \begin{enumerate}[(a)]
+  \item DC term
+  \item cos term
+  \item harmonic term
+  \item sine term
+  \item None of the above.
+\end{enumerate}
+\mks{2}
+%\begin{solution}
+%  (d)
+%\end{solution}
+
+\vspace*{3mm}
+
+\item The eigenvalues of a dataset are: [24, 19, 11, 4, 1, 0.88, 0.21]. Approximately, what variance in the dataset do the first 4 eigenvalues represent (when rounded)?
+
+\begin{enumerate} [(a)]
+  \item 97.0\%
+  \item 96.5\%
+  \item 96.0\%
+  \item 95.5\%
+  \item 95.0\%
+\end{enumerate}
+\mks{3}
+%  \begin{solution}
+%    (b)
+%  \end{solution}
+
+
+\vspace*{3mm}
+
+\item Matrix $K$ is a covariance matrix of some 3D data:
+
+${K}=\left[\begin{array}{ccc}1 & -1 & 4 \\ 3 & 2 & -1 \\ 2 & 1 & -1\end{array}\right]$
+
+  Which of the following sets is the correct eigenvalues and
+  eigenvectors of $K$?
+
+\begin{enumerate}[(a)]
+\item Set A \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_A=7 $ ~ and ~
+$\mathbf{e}_A=\left[\begin{array}{c}1 \\-2 \\1 \end{array}\right]$, \\
+\item Set B \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_B=-2 $ ~ and ~
+$\mathbf{e}_B=\left[\begin{array}{c}-1 \\1  \\1 \end{array}\right]$, \\
+\item Set C \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_C=-5 $ ~ and ~
+$\mathbf{e}_C=\left[\begin{array}{c}-1 \\-2  \\1 \end{array}\right]$,
+\item Set D \hspace*{5mm} $\longrightarrow$ \hspace*{3mm} $\lambda_D=1 $ ~ and ~
+$\mathbf{e}_D=\left[\begin{array}{c}-1 \\2  \\1 \end{array}\right]$,
+\item Both Sets B and C
+\end{enumerate}
+\mks{4}
+%\begin{solution}
+%(b)
+%\end{solution}
+
+\newpage
+\item Your friend was recently on an 11-hour, long-haul flight.  Each hour during the flight, he or she made a note of the "outside air temperature" reading as displayed on the aircraft information screen. The readings are shown as signal $R$ in Equation (\ref{eq:RRR}) below.
+\begin{equation}
+R = \left (\begin{array}{ccccccccccc}
+          0  &  -25 & -44 & -70 & -70 & -50 & -50 & -40 & 0
+       \end{array} \right),
+       \label{eq:RRR}
+\end{equation}
+You decide to apply an averaging filter $f$ to smooth this $R$ signal, that then results in signal $S$ (noting edge effects when performing convolution) in Equation (\ref{eq:SSS}) below, i.e. $S = R * f$:
+\begin{equation}
+S = \frac{1}{6} \left (\begin{array}{ccccccccccc}
+        0  & -50  & -138 & -278  & -368 & -380 & -340 & -280  & -180  & -80  &   0
+
+       \end{array} \right)  .
+          \label{eq:SSS}
+\end{equation}
+
+ Given the $\frac{1}{6}$ normalisation factor,  which of these filters below is the correct filter $f$?
+
+\begin{enumerate}[(a)]
+\item \hspace*{2mm}  $h = \frac{1}{6} (-1 ~ ~ ~ 4 ~ ~ ~ -1)$
+\item \hspace*{2mm}  $h = \frac{1}{6} (1 ~ ~ ~ 4 ~ ~ ~ 1)$
+\item \hspace*{2mm}  $h = \frac{1}{6} (2 ~ ~ ~ 2 ~ ~ ~ 2)$
+\item \hspace*{2mm}  $h = \frac{1}{6} (1 ~ ~ ~ 1 ~ ~ ~ 1)$
+\item \hspace*{2mm}  $h = \frac{1}{6} (0 ~ ~ ~ 5 ~ ~ ~ 1)$
+\end{enumerate}
+\mks{3}
+%Answer is (c)
+
+\item Consider how the Fourier domain of a signal is affected under the
+following operations: (i) translation or delay shift of an audio
+signal, (ii) rotation of an object within an image on a uniform background. Which of these options is TRUE:
+
+\begin{enumerate}[(a)]
+\item Under translation, the frequency magnitudes in the Fourier domain  are shifted in a positive direction by the amount of translation. Under rotation, the Fourier domain magnitudes are rotated by an amount corresponding to the rotated object.
+\item Under translation, the Fourier domain is not affected and the frequency magnitudes retain their position. Under rotation, the Fourier domain magnitudes also remain in the same position.
+\item Under translation, the Fourier domain is not affected and the  frequency magnitudes retain their position. Under rotation, the Fourier domain magnitudes are rotated by an amount corresponding to the rotated object.
+\item Under translation, the frequency magnitudes in the Fourier domain are shifted in a negative direction to the translation. Under rotation, the Fourier domain magnitudes remain the in the same position.
+\item None of the above.
+\end{enumerate}
+\mks{2}
+%\begin{solution}
+%(c)
+%\end{solution}
+
+\newpage
+\item  Consider the satellite image below (Moon Surface), of a small area of the surface of the Moon, which has suffered from some linear noise during transmission back to Earth. The image below-right (Cleaned-Image) is a cleaned-up version after the  Fourier space of the original image was altered using a special mask.  The second row of the figure shows 5 masks,
+labelled $(A,B,C,D,E)$, one of which was used to produce the cleaned-up image.
+
+\begin{figure}[h!]
+\centering
+\begin{tabular}{ccccc}
+&  \includegraphics[height=3.0cm]{Figures/moon.jpg} & &
+\includegraphics[height=3.0cm]{Figures/moonclean.jpg} &  \tabularnewline
+& {\footnotesize Moon Surface} &  & {\footnotesize Cleaned Image} &
+\tabularnewline    \tabularnewline
+%\includegraphics[angle=90,height=3.0cm]{moonpeaks.jpg} &
+\includegraphics[angle=0,height=3.0cm]{Figures/wrongmask2.jpg} &
+\reflectbox{\includegraphics[angle=0,height=3.0cm]{Figures/moonpeaks.jpg}} &
+\reflectbox{\includegraphics[angle=90,height=3.0cm]{Figures/moonpeaks.jpg}} &
+\includegraphics[angle=0,height=3.0cm]{Figures/moonpeaks.jpg} &
+\includegraphics[angle=0,height=3.0cm]{Figures/wrongmask.jpg} \tabularnewline
+$A$  & $B$ &  $C$ & $D$ & $E$ \tabularnewline
+\end{tabular}
+\caption{{\small(top) Original Moon Surface image and its cleaned version, (bottom) Five possible masks applied to the Fourier space of the Moon Surface image.}} \label{fig:FFT1}
+\end{figure}
+
+Which of the above masks was used to clean the image?
+\begin{enumerate}[(a)]
+\item Mask $A$
+\item Mask $B$
+\item Mask $C$
+\item Mask $D$
+\item Mask $E$
+
+\end{enumerate}
+\mks{6}
+%\begin{solution}
+%(b)
+%\end{solution}
+
+
+
+\end{enumerate}
+
+\begin{MKSOLUTION}
+\newpage
+\begin{tabular}{|c|c|}
+\hline
+%\textbf{Q1} &\textbf{Answer}\\ \hline
+1  & (a)\\
+2  & (b)\\
+3  & (a)\\
+4  & (c)\\
+5  & (d)\\
+6  & (d)\\
+7  & (c)\\
+8  &(d)\\
+9  &(e)\\
+10 &(c)\\
+11 &(b)\\
+12 &(c)\\
+13 &(b)\\
+14 &(d)\\
+15 &(d)\\
+16 &(b)\\
+17 &(b)\\
+18 &(c)\\
+19 &(c)\\
+20 &(b)\\
+\hline
+\end{tabular}
+
+\end{MKSOLUTION}
+
+\end{MKEXAM}
+\end{document}
