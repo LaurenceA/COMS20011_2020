@@ -161,3 +161,8 @@ Last year's exams are very relevant, (we've included them below), but SPS exams 
 
 * [original paper](exams/2020_original.pdf)
 * [resit paper](exams/2020_resit.pdf)
+
+#### Laurence's exam videos:
+* [original paper (8, 9, 10)](https://web.microsoftstream.com/video/904f561f-3f83-4964-a8e4-e705116df532)
+* [original paper (11, 12, 13)](https://web.microsoftstream.com/video/5285445e-4751-47dc-830e-dbde582e9684)
+* [resit (10, 12, 13)](https://web.microsoftstream.com/video/8ea8e984-5e8e-47c7-9de6-9a8978b43742)
